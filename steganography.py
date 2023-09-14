@@ -9,12 +9,23 @@ class Steganography:
         self.container_data = ''
         self.message_data = ''
         self.stego_data = ''
+        self.decoded_message = ''
+
+    @staticmethod
+    def convert_to_byte_code(unicode_char):
+        byte_code = format(unicode_char, 'b')
+
+        temp = 8 - len(byte_code)
+        if temp != 0:
+            byte_code = '0' * temp + byte_code
+
+        return byte_code
 
     def _encode(self):
         if isinstance(self.message_data, str):
-            encoded_text = ''.join(format(ord(char), 'b') for char in self.message_data)
+            encoded_text = ''.join(self.convert_to_byte_code(ord(char)) for char in self.message_data)
         else:
-            encoded_text = ''.join(format(char, 'b') for char in self.message_data)
+            encoded_text = ''.join(self.convert_to_byte_code(char) for char in self.message_data)
 
         encoded_byte_list = [char for char in encoded_text]
 
@@ -53,12 +64,19 @@ class Steganography:
             if char in self.en_letters:
                 str_of_bytes += '0'
 
-        finish = False
-        while not finish:
+        result_string = ''
+        while True:
             if len(str_of_bytes) > 8:
                 binary_char = str_of_bytes[:8]
+
+                if binary_char == '00000000':
+                    break
+
                 str_of_bytes = str_of_bytes[8:]
-                print(f'{binary_char = }')
-                char = chr(int(binary_char, 2)).decode('hex').decode('utf-8')
+                unicode_char = int(binary_char, base=2)
+                char = chr(unicode_char)
+                result_string += char
             else:
-                finish = True
+                break
+
+        self.decoded_message = result_string

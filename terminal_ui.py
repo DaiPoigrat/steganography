@@ -3,13 +3,13 @@ import sys
 from command_manager import CMDManager
 
 
-def get_command_list():
+def get_command_list_put():
     command_list = sys.argv[1:]
 
     manager = CMDManager()
 
     if '-h' in command_list or '--help' in command_list:
-        manager.help_command()
+        manager.help_command(module_type='put')
         return sys.exit()
 
     if len(command_list) < 2:
@@ -51,8 +51,48 @@ def get_command_list():
         except Exception as e:
             print(f'CODE EXCEPTION: {e = }')
 
-    manager.start()
+    manager.encode()
+
+
+def get_command_list_get():
+    command_list = sys.argv[1:]
+
+    manager = CMDManager()
+
+    if '-h' in command_list or '--help' in command_list:
+        manager.help_command(module_type='get')
+        return sys.exit()
+
+    if len(command_list) < 2:
+        print('Wrong set of parameters!')
+        return sys.exit()
+
+    use_message_command = False
+    use_stego_command = False
+
+    while len(command_list) > 0:
+        try:
+            arg = command_list.pop(0)
+
+            if arg.startswith('-'):
+                match arg:
+                    case '-s' | '--stego':
+                        if not use_stego_command:
+                            path_to_stego = command_list.pop(0)
+                            manager.stego_path = path_to_stego
+                            use_stego_command = True
+
+                    case '-m' | '--message':
+                        if not use_message_command:
+                            path_to_message = command_list.pop(0)
+                            manager.decoded_message_path = path_to_message
+                            use_message_command = True
+
+        except Exception as e:
+            print(f'CODE EXCEPTION: {e = }')
+
+    manager.decode()
 
 
 if __name__ == '__main__':
-    get_command_list()
+    ...
