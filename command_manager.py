@@ -18,17 +18,28 @@ class CMDManager(Steganography):
         :param module_type: 'put' or 'get'
         :return:
         """
+        print('\n\n')
         if module_type == 'put':
-            print('Command list:')
+            print('This script will insert some message into the text container')
+            print('Signatures of start:')
+            print('1) py put-message.py -c {container_path} -m {message_path} -s {stegocontainer_path}')
+            print('2) py put-message.py -c {container_path}')
             print('-h --help\tcommand list')
+            print('Command list:')
             print('-m --message\tpath to input message file')
             print('-s --stego\tpath to output stego container')
             print('-c --container\tRequired! path to container file')
-        if module_type == 'get':
+            print('\n\n')
+        elif module_type == 'get':
+            print('This script will decode some message from the test container')
+            print('Signatures of start:')
+            print('1) py get-message.py -s {stegocontainer_path} -m {message_path}')
+            print('2) py get-message.py')
             print('Command list:')
             print('-h --help\tcommand list')
             print('-m --message\tpath to output message file')
             print('-s --stego\tpath to input stego container')
+            print('\n\n')
         else:
             print('Module type error!')
             sys.exit()
