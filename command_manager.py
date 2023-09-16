@@ -11,6 +11,7 @@ class CMDManager(Steganography):
         self.stego_path = ''
         self.decoded_message_path = ''
 
+
     @staticmethod
     def help_command(module_type: str):
         """
@@ -60,10 +61,10 @@ class CMDManager(Steganography):
         self._decode()
 
         if not self.decoded_message_path:
-            print(self.decoded_message)
+            sys.stdout.buffer.write(self.decoded_message)
             return
 
-        with open(f'{self.decoded_message_path}', 'w') as file:
+        with open(f'{self.decoded_message_path}', 'wb') as file:
             file.write(self.decoded_message)
 
     def stego_command(self):
